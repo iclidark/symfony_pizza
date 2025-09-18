@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="burger-detail">
+        <h2 class="burger-detail-title">{{ burger.name }}</h2>
+
+        {% if burger.image %}
+            <img class="burger-detail-image" src="{{ asset( burger.image) }}" alt="{{ burger.name }}">
+        {% endif %}
+
+        <p class="burger-detail-description">
+            {{ burger.description ?? 'Pas de description disponible.' }}
+        </p>
+
+        <p class="burger-detail-price">
+            Prix : <strong>{{ burger.price|number_format(2, ',', ' ') }} €</strong>
+        </p>
+
+        <a class="burger-back" href="{{ path('burger_liste') }}">← Retour à la liste</a>
+    </div>
+{% endblock %}
