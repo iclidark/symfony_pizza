@@ -16,8 +16,8 @@ class Image
     #[ORM\Column(length: 255)]
     private ?string $url = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $altText = null;
+    #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
+    private ?Product $product = null;
 
     public function getId(): ?int
     {
@@ -36,14 +36,14 @@ class Image
         return $this;
     }
 
-    public function getAltText(): ?string
+    public function getProduct(): ?self
     {
-        return $this->altText;
+        return $this->Product;
     }
 
-    public function setAltText(string $altText): static
+    public function setProduct(?Product $Product): static
     {
-        $this->altText = $altText;
+        $this->product = $product;
 
         return $this;
     }

@@ -2,39 +2,39 @@
 
 namespace App\Repository;
 
-use App\Entity\Sauce;
+use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Sauce>
+ * @extends ServiceEntityRepository<Product>
  */
-class SauceRepository extends ServiceEntityRepository
+class ProductRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Sauce::class);
+        parent::__construct($registry, Product::class);
     }
 
     //    /**
-    //     * @return Sauce[] Returns an array of Sauce objects
+    //     * @return Product[] Returns an array of Product objects
     //     */
     //    public function findByExampleField($value): array
     //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
     //            ->setParameter('val', $value)
-    //            ->orderBy('s.id', 'ASC')
+    //            ->orderBy('p.id', 'ASC')
     //            ->setMaxResults(10)
     //            ->getQuery()
     //            ->getResult()
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Sauce
+    //    public function findOneBySomeField($value): ?Product
     //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
     //            ->setParameter('val', $value)
     //            ->getQuery()
     //            ->getOneOrNullResult()

@@ -2,39 +2,39 @@
 
 namespace App\Repository;
 
-use App\Entity\Pain;
+use App\Entity\OrderItem;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Pain>
+ * @extends ServiceEntityRepository<OrderItem>
  */
-class PainRepository extends ServiceEntityRepository
+class OrderItemRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Pain::class);
+        parent::__construct($registry, OrderItem::class);
     }
 
     //    /**
-    //     * @return Pain[] Returns an array of Pain objects
+    //     * @return OrderItem[] Returns an array of OrderItem objects
     //     */
     //    public function findByExampleField($value): array
     //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
+    //        return $this->createQueryBuilder('o')
+    //            ->andWhere('o.exampleField = :val')
     //            ->setParameter('val', $value)
-    //            ->orderBy('p.id', 'ASC')
+    //            ->orderBy('o.id', 'ASC')
     //            ->setMaxResults(10)
     //            ->getQuery()
     //            ->getResult()
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Pain
+    //    public function findOneBySomeField($value): ?OrderItem
     //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
+    //        return $this->createQueryBuilder('o')
+    //            ->andWhere('o.exampleField = :val')
     //            ->setParameter('val', $value)
     //            ->getQuery()
     //            ->getOneOrNullResult()
