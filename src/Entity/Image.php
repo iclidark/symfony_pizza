@@ -16,7 +16,7 @@ class Image
     #[ORM\Column(length: 255)]
     private ?string $url = null;
 
-    #[ORM\OneToOne(targetEntity: self::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: Product::class, cascade: ['persist', 'remove'])]
     private ?Product $product = null;
 
     public function getId(): ?int
@@ -41,7 +41,7 @@ class Image
         return $this->Product;
     }
 
-    public function setProduct(?Product $Product): static
+    public function setProduct(?Product $product): static
     {
         $this->product = $product;
 

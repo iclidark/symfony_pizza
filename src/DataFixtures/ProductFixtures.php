@@ -20,7 +20,7 @@ class ProductFixtures extends Fixture
             $product->setPrice(9.99 + $i);
             $product->setDescription("Délicieuse pizza n°$i avec des ingrédients frais.");
             $product->setStock(10 + $i);
-            $product->setStatus(ProductStatus::Available); // ✅ Enum (si ta méthode setStatus accepte bien une Enum)
+            $product->setStatus(ProductStatus::AVAILABLE->value); // ✅ Enum (si ta méthode setStatus accepte bien une Enum)
 
             // ✅ Ensuite on crée l'image associée
             $image = new Image();
