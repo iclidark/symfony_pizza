@@ -16,7 +16,7 @@ class OrderItem
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $quantity = null;
+    private ?int $productPrice = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'orderItems')]
     private ?self $Product = null;
@@ -37,14 +37,14 @@ class OrderItem
         return $this->id;
     }
 
-    public function getQuantity(): ?int
+    public function getProductPrice(): ?int
     {
-        return $this->quantity;
+        return $this->productPrice;
     }
 
-    public function setQuantity(int $quantity): static
+    public function setProductPrice(int $productPrice): static
     {
-        $this->quantity = $quantity;
+        $this->productPrice = $productPrice;
 
         return $this;
     }
