@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Luckiest+Guy&display=swap');
 
 body {
@@ -156,4 +157,12 @@ h1 {
 
 .burger-detail-back:hover {
     background: #2980b9;
+}
+
+.navbar {
+    background-color: #c0392b !important;
+}
+
+.navbar-brand, .nav-link {
+    color: white !important;
 }

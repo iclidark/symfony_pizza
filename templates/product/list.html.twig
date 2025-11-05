@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'product_list_title'|trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'product_list_title'|trans }}</h1>
+
+    <div class="row">
+        {% for product in products %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        {% if product.image %}
+                            <img src="images/{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                        {% endif %}
+                        
+                        
+                        <a href="#" class="btn btn-primary">{{ 'view_detail'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
