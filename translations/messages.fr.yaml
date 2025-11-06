@@ -1,2 +1,7 @@
 site_title: Accueil
 products: Produits
+price: Prix
+stock: Stock
+add_to_cart: Ajouter au panier
+editor: Modifier
+create_product: Créer un produit

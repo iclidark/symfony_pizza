@@ -42,26 +42,23 @@ class ProductFixtures extends Fixture
 
             // ✅ Ensuite on crée l'image associée
             $image = new Image();
-            $image->setUrl("margharita.jpg");
+            $image->setUrl("/images/margharita.jpg");
             $product->setImage($image); // ici $image est bien défini
 
             $image2 = new Image();
-            $image2->setUrl("3fromage.jpg");
+            $image2->setUrl("/images/3fromage.jpg");
             $product2->setImage($image2); // ici $image est bien défini
 
             $image3 = new Image();
-            $image3->setUrl("pizzaorientale.jpg");
+            $image3->setUrl("/images/pizzaorientale.jpg");
             $product3->setImage($image3); // ici $image est bien défini
 
             // Relation inverse si tu veux :
             // $product->addImage($image);
 
             $manager->persist($product);
-            $manager->persist($image);
             $manager->persist($product2);
-            $manager->persist($image2);
             $manager->persist($product3);
-            $manager->persist($image3);
         
 
         $manager->flush();

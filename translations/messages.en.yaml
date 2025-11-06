@@ -1,2 +1,7 @@
 site_title: Home
 products: Products
+price: Price
+stock: Stock
+add_to_cart: Add to Cart
+edit: Edit
+create_product: Create Product

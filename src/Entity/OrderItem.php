@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\OrderItemRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderItemRepository::class)]
@@ -15,78 +13,57 @@ class OrderItem
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\ManyToOne(inversedBy: 'orderItems')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Product $product = null;
+
+    #[ORM\ManyToOne(inversedBy: 'orderItems')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Order $relatedOrder = null;
+
     #[ORM\Column]
-    private ?int $productPrice = null;
-
-    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'orderItems')]
-    private ?self $Product = null;
-
-    /**
-     * @var Collection<int, self>
-     */
-    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'Product')]
-    private Collection $orderItems;
-
-    public function __construct()
-    {
-        $this->orderItems = new ArrayCollection();
-    }
+    private ?int $quantity = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getProductPrice(): ?int
+    public function getProduct(): ?Product
     {
-        return $this->productPrice;
+        return $this->product;
     }
 
-    public function setProductPrice(int $productPrice): static
+    public function setProduct(?Product $product):
+    self
     {
-        $this->productPrice = $productPrice;
+        $this->product = $product;
 
         return $this;
     }
 
-    public function getProduct(): ?self
+    public function getRelatedOrder(): ?Order
     {
-        return $this->Product;
+        return $this->relatedOrder;
     }
 
-    public function setProduct(?self $Product): static
+    public function setRelatedOrder(?Order $relatedOrder):
+    self
     {
-        $this->Product = $Product;
+        $this->relatedOrder = $relatedOrder;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, self>
-     */
-    public function getOrderItems(): Collection
+    public function getQuantity(): ?int
     {
-        return $this->orderItems;
+        return $this->quantity;
     }
 
-    public function addOrderItem(self $orderItem): static
+    public function setQuantity(int $quantity):
+    self
     {
-        if (!$this->orderItems->contains($orderItem)) {
-            $this->orderItems->add($orderItem);
-            $orderItem->setProduct($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrderItem(self $orderItem): static
-    {
-        if ($this->orderItems->removeElement($orderItem)) {
-            // set the owning side to null (unless already changed)
-            if ($orderItem->getProduct() === $this) {
-                $orderItem->setProduct(null);
-            }
-        }
+        $this->quantity = $quantity;
 
         return $this;
     }

@@ -16,7 +16,7 @@ class Image
     #[ORM\Column(length: 255)]
     private ?string $url = null;
 
-    #[ORM\OneToOne(targetEntity: Product::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'image', targetEntity: Product::class, cascade: ['persist', 'remove'])]
     private ?Product $product = null;
 
     public function getId(): ?int
@@ -36,13 +36,18 @@ class Image
         return $this;
     }
 
-    public function getProduct(): ?self
+    public function getProduct(): ?Product
     {
-        return $this->Product;
+        return $this->product;
     }
 
     public function setProduct(?Product $product): static
     {
+        // set the owning side of the relation if necessary
+        if ($product->getImage() !== $this) {
+            $product->setImage($this);
+        }
+
         $this->product = $product;
 
         return $this;
