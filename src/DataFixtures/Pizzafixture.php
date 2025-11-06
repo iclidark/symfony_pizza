@@ -6,7 +6,7 @@ use App\Entity\Pizza;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class PizzaFixtures extends Fixture
+class Pizzafixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {

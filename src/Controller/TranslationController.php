@@ -9,16 +9,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TranslationController extends AbstractController
 {
-    #[Route('/switch-locale/{locale}', name: 'switch_locale')]
-    public function switchLocale(Request $request, string $locale): Response
+    #[Route('/switch/{locale}', name: 'switch_locale')]
+    public function switch(Request $request, string $locale): Response
     {
         $request->getSession()->set('_locale', $locale);
 
-        $referer = $request->headers->get('referer');
-        if ($referer) {
-            return $this->redirect($referer);
-        }
-
-        return $this->redirectToRoute('product_list');
+        return $this->redirect($request->headers->get('referer', '/'));
     }
 }

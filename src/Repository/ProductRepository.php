@@ -16,28 +16,22 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
-    //    /**
-    //     * @return Product[] Returns an array of Product objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('p.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function countByCategory(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('c.name, COUNT(p.id) as product_count')
+            ->join('p.category', 'c')
+            ->groupBy('c.name')
+            ->getQuery()
+            ->getResult();
+    }
 
-    //    public function findOneBySomeField($value): ?Product
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function getAvailabilityRatio(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.status, COUNT(p.id) as status_count')
+            ->groupBy('p.status')
+            ->getQuery()
+            ->getResult();
+    }
 }

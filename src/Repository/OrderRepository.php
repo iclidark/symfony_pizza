@@ -16,28 +16,15 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
-//    /**
-//     * @return Order[] Returns an array of Order objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('o')
-//            ->andWhere('o.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('o.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Order
-//    {
-//        return $this->createQueryBuilder('o')
-//            ->andWhere('o.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function getTotalSalesByMonth(): array
+    {
+        return $this->createQueryBuilder('o')
+            ->select('SUBSTRING(o.createdAt, 1, 7) as month, SUM(o.total) as total_sales')
+            ->where('o.status = :status')
+            ->setParameter('status', 'delivered')
+            ->groupBy('month')
+            ->orderBy('month', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -1,0 +1,146 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord{% endblock %}
+
+{% block body %}
+    <h1>Tableau de bord</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Nombre total de produits par catégorie
+                </div>
+                <div class="card-body">
+                    <canvas id="productsByCategoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    Ratio de disponibilité des produits
+                </div>
+                <div class="card-body">
+                    <canvas id="availabilityRatioChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    Les 5 dernières commandes
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Numéro de commande</th>
+                                <th>Client</th>
+                                <th>Date</th>
+                                <th>Total</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in latestOrders %}
+                                <tr>
+                                    <td>{{ order.id }}</td>
+                                    <td>{{ order.customer.name }}</td>
+                                    <td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
+                                    <td>{{ order.total }} €</td>
+                                    <td>{{ order.status }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    Montant total des ventes par mois
+                </div>
+                <div class="card-body">
+                    <canvas id="salesByMonthChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Products by category chart
+        var productsByCategoryCtx = document.getElementById('productsByCategoryChart').getContext('2d');
+        var productsByCategoryChart = new Chart(productsByCategoryCtx, {
+            type: 'bar',
+            data: {
+                labels: [{% for item in productsByCategory %}'{{ item.name }}',{% endfor %}],
+                datasets: [{
+                    label: 'Nombre de produits',
+                    data: [{% for item in productsByCategory %}{{ item.product_count }},{% endfor %}],
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Availability ratio chart
+        var availabilityRatioCtx = document.getElementById('availabilityRatioChart').getContext('2d');
+        var availabilityRatioChart = new Chart(availabilityRatioCtx, {
+            type: 'pie',
+            data: {
+                labels: [{% for item in availabilityRatio %}'{{ item.status }}',{% endfor %}],
+                datasets: [{
+                    label: 'Disponibilité',
+                    data: [{% for item in availabilityRatio %}{{ item.status_count }},{% endfor %}],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            }
+        });
+
+        // Sales by month chart
+        var salesByMonthCtx = document.getElementById('salesByMonthChart').getContext('2d');
+        var salesByMonthChart = new Chart(salesByMonthCtx, {
+            type: 'line',
+            data: {
+                labels: [{% for item in salesByMonth %}'{{ item.month }}',{% endfor %}],
+                datasets: [{
+                    label: 'Ventes totales (€)',
+                    data: [{% for item in salesByMonth %}{{ item.total_sales }},{% endfor %}],
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            }
+        });
+    </script>
+{% endblock %}
