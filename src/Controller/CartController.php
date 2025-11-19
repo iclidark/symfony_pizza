@@ -2,67 +2,49 @@
 
 namespace App\Controller;
 
-use App\Entity\Product;
-use App\Repository\ProductRepository;
+use App\Service\CartService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
 {
     #[Route('/cart', name: 'cart_index')]
-    public function index(SessionInterface $session, ProductRepository $productRepository): Response
+    public function index(CartService $cartService): Response
     {
-        $cart = $session->get('cart', []);
-        $cartWithData = [];
-
-        foreach ($cart as $id => $quantity) {
-            $cartWithData[] = [
-                'product' => $productRepository->find($id),
-                'quantity' => $quantity,
-            ];
-        }
-
-        $total = array_reduce($cartWithData, function ($total, $item) {
-            return $total + $item['product']->getPrice() * $item['quantity'];
-        }, 0);
-
         return $this->render('cart/index.html.twig', [
-            'items' => $cartWithData,
-            'total' => $total,
+            'cart' => $cartService->getCart(),
+            'total' => $cartService->getTotal(),
         ]);
     }
 
     #[Route('/cart/add/{id}', name: 'cart_add')]
-    public function add($id, SessionInterface $session):
-    Response
+    public function add(int $id, CartService $cartService, Request $request): Response
     {
-        $cart = $session->get('cart', []);
+        $cartService->add($id);
 
-        if (!empty($cart[$id])) {
-            $cart[$id]++;
-        } else {
-            $cart[$id] = 1;
+        if ($request->isXmlHttpRequest()) {
+            return $this->json([
+                'count' => count($cartService->getCart()),
+            ]);
         }
-
-        $session->set('cart', $cart);
 
         return $this->redirectToRoute('cart_index');
     }
 
     #[Route('/cart/remove/{id}', name: 'cart_remove')]
-    public function remove($id, SessionInterface $session):
-    Response
+    public function remove(int $id, CartService $cartService, Request $request): Response
     {
-        $cart = $session->get('cart', []);
+        $cartService->remove($id);
 
-        if (!empty($cart[$id])) {
-            unset($cart[$id]);
+        if ($request->isXmlHttpRequest()) {
+            return $this->json([
+                'count' => count($cartService->getCart()),
+                'total' => $cartService->getTotal(),
+                'productId' => $id,
+            ]);
         }
-
-        $session->set('cart', $cart);
 
         return $this->redirectToRoute('cart_index');
     }

@@ -1,3 +1,9 @@
-site_title: Accueil
-products: Products
-add_to_cart: ajouter au panier
+site_title: Mon Magasin
+products: Produits
+add_to_cart: Ajouter au panier
+search_products: Rechercher des produits
+no_products_found: Aucun produit trouvé.
+create_product: Créer un produit
+price: Prix
+stock: Stock
+edit: Modifier

@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'search_products'|trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'search_products'|trans }}</h1>
+
+    {{ component('ProductSearch') }}
+{% endblock %}
