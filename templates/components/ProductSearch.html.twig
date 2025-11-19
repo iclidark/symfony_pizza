@@ -1,22 +1,13 @@
 <div {{ attributes }}>
-    <input
-        type="search"
-        data-model="on(input)|debounce(300)|query"
-        placeholder="{{ 'search_products'|trans }}"
-        class="form-control"
-    />
+    <input type="text" data-model="query" placeholder="Search for a product...">
 
-    {% if this.products|length > 0 %}
+    {% if products|length > 0 %}
         <ul>
-            {% for product in this.products %}
-                <li>
-                    <a href="{{ path('product_show', {id: product.id}) }}">
-                        {{ product.name }}
-                    </a>
-                </li>
+            {% for product in products %}
+                <li>{{ product.name }}</li>
             {% endfor %}
         </ul>
-    {% elseif this.query|length > 0 %}
-        <p>{{ 'no_products_found'|trans }}</p>
+    {% else %}
+        <p>No products found.</p>
     {% endif %}
 </div>

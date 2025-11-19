@@ -24,6 +24,10 @@ class ProductSearch
 
     public function getProducts(): array
     {
-        return $this->productRepository->searchByName($this->query);
+        if ($this->query === '') {
+            return [];
+        }
+
+        return $this->productRepository->findBySearchQuery($this->query);
     }
 }

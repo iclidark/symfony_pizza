@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -36,6 +38,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $lastName = null;
+
+    /**
+     * @var Collection<int, CreditCard>
+     */
+    #[ORM\OneToMany(targetEntity: CreditCard::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $creditCards;
+
+    public function __construct()
+    {
+        $this->creditCards = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -102,20 +115,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Ensure the session doesn't contain actual password hashes by CRC32C-hashing them, as supported since Symfony 7.3.
+     * @see UserInterface
      */
-    public function __serialize(): array
-    {
-        $data = (array) $this;
-        $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
-
-        return $data;
-    }
-
-    #[\Deprecated]
     public function eraseCredentials(): void
     {
-        // @deprecated, to be removed when upgrading to Symfony 8
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
     public function getFirstName(): ?string
@@ -138,6 +143,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastName(string $lastName): static
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CreditCard>
+     */
+    public function getCreditCards(): Collection
+    {
+        return $this->creditCards;
+    }
+
+    public function addCreditCard(CreditCard $creditCard): static
+    {
+        if (!$this->creditCards->contains($creditCard)) {
+            $this->creditCards->add($creditCard);
+            $creditCard->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCreditCard(CreditCard $creditCard): static
+    {
+        if ($this->creditCards->removeElement($creditCard)) {
+            // set the owning side to null (unless already changed)
+            if ($creditCard->getUser() === $this) {
+                $creditCard->setUser(null);
+            }
+        }
 
         return $this;
     }
