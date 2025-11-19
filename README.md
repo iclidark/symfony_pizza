@@ -68,3 +68,6 @@ Attention : Il vous faut PHP 8.2 pour faire fonctionner ce projet si vous avez P
 symfony server:start
 /products
 /credit/card
+php bin/console doctrine:fixtures:load
+php bin/console doctrine:migrations:migrate
+php bin/console make:entity
