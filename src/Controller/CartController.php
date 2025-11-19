@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Order;
+use App\Entity\OrderItem;
 use App\Service\CartService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,6 +48,46 @@ class CartController extends AbstractController
                 'productId' => $id,
             ]);
         }
+
+        return $this->redirectToRoute('cart_index');
+    }
+
+    #[Route('/cart/checkout', name: 'cart_checkout')]
+    public function checkout(CartService $cartService, EntityManagerInterface $entityManager): Response
+    {
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+        if (!$user) {
+            $this->addFlash('warning', 'You need to be logged in to checkout.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        $cart = $cartService->getCart();
+
+        if (empty($cart)) {
+            return $this->redirectToRoute('cart_index');
+        }
+
+        $order = new Order();
+        $order->setUser($user);
+        $order->setCreatedAt(new \DateTimeImmutable());
+
+        $total = 0;
+        foreach ($cart as $item) {
+            $orderItem = new OrderItem();
+            $orderItem->setProduct($item['product']);
+            $orderItem->setQuantity($item['quantity']);
+            $orderItem->setPrice($item['product']->getPrice());
+            $order->addOrderItem($orderItem);
+            $total += $item['product']->getPrice() * $item['quantity'];
+        }
+
+        $order->setTotal($total);
+
+        $entityManager->persist($order);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Your order has been placed successfully.');
 
         return $this->redirectToRoute('cart_index');
     }

@@ -33,7 +33,9 @@
                 <tr>
                     <td colspan="3" class="text-right"><strong>Total:</strong></td>
                     <td data-cart-target="cartTotal">{{ total }} €</td>
-                    <td></td>
+                    <td>
+                        <a href="{{ path('cart_checkout') }}" class="btn btn-success">Checkout</a>
+                    </td>
                 </tr>
             </tfoot>
         </table>
