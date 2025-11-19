@@ -65,5 +65,6 @@ Attention : Il vous faut PHP 8.2 pour faire fonctionner ce projet si vous avez P
 - Notez comment fonctionne votre projet dans le fichier README.md et mettez à jour ce fichier au fur et à mesure de l'avancement de votre projet pour aider les autres développeurs à comprendre comment fonctionne votre projet.
 # symfony_crud_croustillant_base
 
+symfony server:start
 /products
 /credit/card
